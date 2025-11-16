@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>The Goodshepherd Church - Church Page</title>
+            <!-- Favicon for all browsers -->
+    <link rel="icon" href="andriodicon.png" type="image/png" sizes="512x512">
+
+            <!-- for iPhones/iPads if “Add to Home Screen” is used -->
+    <link rel="apple-touch-icon" href="iosicon.png">
+   
+    <title>The Goodshepherd Church</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #fff;
+            color: #222;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        .section {
+            width: 100%; /* Ensure sections do not exceed viewport width */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        /* Landing Section */
+        .landing {
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        .landing video {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 0;
+        }
+        .landing-content {
+            position: relative;
+            z-index: 1;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-shadow: 0 2px 8px #000a;
+            background: rgba(0,0,0,0.25);
+            /* keep existing but center text narrower for readability */
+            padding: 0 24px;
+            text-align: center;
+        }
+        .landing-title {
+            font-size: clamp(3rem, 8vw, 6.4rem); /* large responsive heading */
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin: 0 0 12px 0;
+            line-height: 1;
+        }
+        /* decorative underline under title */
+        .landing-title::after {
+            content: "";
+            display: block;
+            margin: 22px auto 18px auto;
+            height: 6px;
+            width: 260px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #8A2BE2 0%, #1877F2 100%);
+            box-shadow: 0 6px 18px rgba(138,43,226,0.12);
+        }
+
+        .landing-subtitle {
+            font-size: 1.6rem;
+            color: #c7a9ff; /* soft purple */
+            margin-bottom: 30px;
+        }
+
+        /* CTA buttons */
+        .cta-group { display:flex; gap:18px; align-items:center; justify-content:center; margin-top:8px; flex-wrap:wrap; }
+        .btn {
+            display:inline-block;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight:700;
+            cursor:pointer;
+            text-decoration:none;
+            color:#fff;
+            transition: transform 140ms ease, box-shadow 140ms ease, opacity 120ms ease;
+        }
+        .btn.primary {
+            background: linear-gradient(90deg,#8A2BE2 0%, #1877F2 100%);
+            box-shadow: 0 8px 30px rgba(138,43,226,0.12);
+        }
+        .btn.primary:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(24,119,242,0.16); }
+
+        .btn.outline {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.22);
+            backdrop-filter: blur(4px);
+        }
+        .btn.outline:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.36); }
+
+        /* Info Section */
+        .info-section {
+            background: #fff;
+            flex-direction: row;
+            padding: 60px 0;
+        }
+        .info-content {
+            flex: 1;
+            padding: 40px 5vw 40px 10vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .info-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .info-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        .info-image {
+            flex: 0 0 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-right: 10vw;
+        }
+        .info-image img {
+            width: 280px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px #0002;
+        }
+        /* Gallery Section */
+        .gallery-section {
+            position: relative;
+            padding: 80px 24px;
+            overflow: hidden;
+        }
+        .gallery-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px);
+            z-index: 1;
+            transition: background-image 0.5s ease-in-out;
+        }
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay for better contrast */
+            z-index: 2;
+        }
+        .gallery-content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+        }
+        .slideshow-container {
+            width: 90%;
+            max-width: 1000px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .slideshow-slide {
+            display: none;
+            width: 100%;
+            height: 600px; /* Increased height for larger photos */
+        }
+        .slideshow-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .slideshow-slide.active {
+            display: block;
+        }
+        .slideshow-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .slideshow-controls button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .slideshow-controls button.active {
+            background: #8A2BE2; /* Highlight active slide */
+        }
+        /* Top navigation bar (updated for left logo, centered nav, right socials) */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+            z-index: 999;
+            background: rgba(51, 45, 35, 0.371); /* darker */
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+            overflow: visible;
+        }
+
+        /* three areas */
+        .top-left, .top-center, .top-right {
+            display: flex;
+            align-items: center;
+        }
+        .top-left { 
+            width: 72px; 
+            display: flex; 
+            align-items: center; 
+        }
+        .top-right { 
+            width: 72px;
+            height: 72px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            margin-left: auto;
+            position: relative;
+        }
+
+        .hamburger .bar {
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            position: absolute;
+            left: 0;
+            transition: all 0.25s ease;
+        }
+
+        /* Clean X animation */
+        .hamburger[aria-expanded="true"] .bar:first-child {
+            transform: translateY(14px) rotate(45deg);
+        }
+
+        .hamburger[aria-expanded="true"] .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger[aria-expanded="true"] .bar:last-child {
+            transform: translateY(-14px) rotate(-45deg);
+        }
+
+        .top-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            white-space: nowrap;
+            overflow: visible;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            /* Removed effects */
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+        }
+
+        /* Horizontal nav links (made larger) */
+        .nav-list {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* tightened to accommodate icons inline */
+            margin:0;
+            padding:0;
+            list-style:none;
+        }
+        /* Giving section styles */
+        .giving-section {
+            background: #f8f4ff;
+            padding: 80px 24px;
+            text-align: center;
+        }
+        .giving-title {
+            font-size: 4.5rem;
+            color : #8A2BE2;
+            margin-bottom: 2rem;
+        }
+        .giving-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        .nav-list .nav-link {
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            background: transparent;
+            border: none;
+            padding: 10px 6px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 160ms ease, color 160ms ease;
+        }
+        /* gradient underline */
+        .nav-list .nav-link::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            bottom: -8px;
+            height: 3px;
+            width: 70%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #8A2BE2 0%, #1877F2 100%); /* purple -> blue */
+            transform-origin: center;
+            transition: transform 220ms cubic-bezier(.2,.8,.2,1);
+            opacity: 0.95;
+        }
+        .nav-list .nav-link:hover { transform: translateY(-6px); color: #fff; }
+        .nav-list .nav-link:hover::after { transform: translateX(-50%) scaleX(1); }
+
+        /* social icons on right: neutral by default, brand color only on hover */
+        .nav-separator { color: rgba(255,255,255,0.35); margin-right:8px; }
+
+        .nav-socials-inline {
+	display:flex;
+	gap:10px;
+	align-items:center;
+	opacity:0.95;
+}
+.nav-socials-inline a {
+	color: rgba(255,255,255,0.8); /* neutral */
+	width: 28px;
+	height: 28px;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	text-decoration:none;
+	border-radius:6px;
+	transition: color 150ms ease, background 150ms ease, transform 120ms ease;
+	padding: 4px; /* slightly larger hit area */
+	background: transparent;
+}
+
+/* SVGs inherit color */
+.nav-socials-inline a svg { width:16px; height:16px; fill: currentColor; }
+
+/* hover brand colors */
+.nav-list .nav-socials-inline a.facebook:hover   { color: #1877F2; background: rgba(24,119,242,0.08); transform: translateY(-3px); }
+.nav-list .nav-socials-inline a.instagram:hover  { color: #E1306C; background: rgba(225,48,108,0.08); transform: translateY(-3px); }
+.nav-list .nav-socials-inline a.x:hover          { color: #1DA1F2; background: rgba(29,161,242,0.08); transform: translateY(-3px); }
+.nav-list .nav-socials-inline a.tiktok:hover     { color: #000;       background: rgba(0,0,0,0.06); transform: translateY(-3px); }
+
+        /* Hamburger button and mobile menu styles */
+        .hamburger {
+            display: none;
+            background: transparent;
+            border: none;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            position: fixed;
+            right: 40px;
+            top: 16px;
+            z-index: 1002;
+            padding: 8px;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .hamburger .bar {
+            display: block;
+            width: 24px;
+            height: 2px;
+            margin: 5px auto;
+            background: #fff;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .hamburger .bar::before,
+        .hamburger .bar::after {
+            content: '';
+            position: absolute;
+            width: 28px;
+            height: 3px;
+            background: #fff;
+            left: 0;
+            transition: all 0.3s ease;
+        }
+        .hamburger .bar::before { transform: translateY(-8px); }
+        .hamburger .bar::after { transform: translateY(8px); }
+        
+        /* Hamburger animation */
+        .hamburger[aria-expanded="true"] .bar {
+            background: transparent;
+        }
+        .hamburger[aria-expanded="true"] .bar::before {
+            transform: translateY(0) rotate(45deg);
+        }
+        .hamburger[aria-expanded="true"] .bar::after {
+            transform: translateY(0) rotate(-45deg);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: #000;
+            flex-direction: column;
+            padding: 80px 0 20px 0;
+            z-index: 999;
+            transition: right 0.3s ease-in-out;
+        }
+        .mobile-nav.open {
+            display: flex;
+            right: 0;
+        }
+        .mobile-nav .nav-link {
+            display: block;
+            text-align: left;
+            width: 100%;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .mobile-nav .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        .mobile-nav .nav-separator { display: none; }
+        .mobile-nav .nav-socials-inline {
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+            padding: 20px 30px;
+            margin-top: auto;
+        }
+        /* Overlay when menu is open */
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+        }
+        .mobile-nav-overlay.open {
+            display: block;
+        }
+
+        /* hide on small screens */
+        @media (max-width: 700px) {
+        	.side-socials { display: none; }
+        	.nav-socials-inline { display: none; }
+}
+
+        /* Scroll down animation */
+        .scroll-down {
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+        .scroll-text {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 8px #000a;
+            animation: fadeInUp 1.2s infinite alternate;
+        }
+        .arrow {
+            width: 24px;
+            height: 36px;
+            display: block;
+            margin: 0 auto;
+            animation: bounce 1.2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0);}
+            50% { transform: translateY(10px);}
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0.6; transform: translateY(10px);}
+            100% { opacity: 1; transform: translateY(0);}
+        }
+        /* Responsive breakpoints */
+        @media (max-width: 900px) {
+            /* Show hamburger, hide main nav */
+            .hamburger {
+                display: block !important;
+            }
+            .top-center { display: none; }
+            .top-right { width: 120px; }
+            .nav-list { gap: 12px; }
+            .landing-title::after { width: 180px; }
+            .landing-subtitle { font-size: 1.2rem; }
+            /* Enable mobile nav */
+            .mobile-nav { display: none; }
+            .mobile-nav.open { display: flex; }
+        }
+        @media (max-width: 700px) {
+            .top-right { display: none; }
+            .nav-socials-inline { display: none; } /* hide inline socials */
+            .mobile-nav .nav-socials-inline { display: flex; } /* but show in mobile menu */
+        }
+        @media (max-width: 600px) {
+            .top-left { width: 56px; }
+            .landing-title { font-size: 2.2rem; }
+            .landing-title::after { width: 140px; height: 4px; margin:12px auto 12px; }
+            .btn { padding: 10px 14px; border-radius: 10px; font-size: 0.95rem; }
+        }
+	</style>
+</head>
+<body>
+    <!-- Landing Section -->
+    <section class="section landing">
+		<div class="top-bar">
+			<div class="top-left">
+				<div class="logo-area">
+					<img src="b.jpg" alt="Logo" class="logo-img">
+				</div>
+			</div>
+
+			<div class="top-center">
+				<nav class="nav-list" aria-label="Main navigation">
+					<button class="nav-link" onclick="scrollToSection(0)">Home</button>
+					<button class="nav-link" onclick="scrollToSection(1)">Who We Are</button>
+					<button class="nav-link" onclick="scrollToSection(2)">Connect With Us</button>
+					<button class="nav-link" onclick="scrollToSection(3)">Location</button>
+					<button class="nav-link" onclick="scrollToSection(4)">Messages</button>
+                    <button class="nav-link" onclick="scrollToSection(5)">Not a Novice</button>
+                    <button class="nav-link" onclick="scrollToSection(6)">Giving</button>
+                    <button class="nav-link" onclick="scrollToSection(7)">GTW</button>
+
+					<!-- separator and socials moved here (inline, immediately after Messages) -->
+					<span class="nav-separator" aria-hidden="true">|</span>
+					<span class="nav-socials-inline" aria-hidden="false">
+                        <a class="facebook" href="https://www.facebook.com/goodshepherdchurchhq?mibextid=wwXIfr&rdid=OMRYBQXdAVUX7Oj3&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F17Tzv4keJ4%2F%3Fmibextid%3DwwXIfr#" target="_blank" aria-label="Facebook" title="Facebook">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.675 0H1.325C0.593 0 0 0.593 0 1.325v21.351C0 23.407 0.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.894-4.788 4.66-4.788 1.324 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.407 24 24 23.407 24 22.676V1.325C24 .593 23.407 0 22.675 0z"/></svg>
+                        </a>
+                        <a class="instagram" href="https://www.instagram.com/goodshepherdchurch_hq?igsh=YWp2cWk0NWo2Yzh1" target="_blank" aria-label="Instagram" title="Instagram">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm5 4.2A4.8 4.8 0 1 1 7.2 11 4.8 4.8 0 0 1 12 6.2zm6.4-.6a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg>
+                        </a>
+                        <a class="x" href="https://x.com/CathedralWest" target="_blank" aria-label="X" title="X">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+                        </a>
+                        <a class="tiktok" href="https://www.tiktok.com/@bishopvcasabere?_t=ZS-90gRznCJhEm&_r=1" target="_blank" aria-label="TikTok" title="TikTok">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tiktok" viewBox="0 0 16 16">
+  <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
+</svg>
+                        </a>
+                    </span>
+				</nav>
+			</div>
+
+			<div class="top-right">
+				<button class="hamburger" aria-expanded="false" aria-controls="mobile-nav" aria-label="Toggle menu">
+					<div class="bar"></div>
+					<div class="bar"></div>
+					<div class="bar"></div>
+				</button>
+			</div>
+
+			<!-- Mobile Navigation Menu -->
+			<div id="mobile-nav" class="mobile-nav" aria-hidden="true">
+				<nav role="navigation" aria-label="Mobile navigation">
+					<button class="nav-link" onclick="scrollToSection(0)">Home</button>
+					<button class="nav-link" onclick="scrollToSection(1)">Who We Are</button>
+					<button class="nav-link" onclick="scrollToSection(2)">Connect With Us</button>
+					<button class="nav-link" onclick="scrollToSection(3)">Location</button>
+					<button class="nav-link" onclick="scrollToSection(4)">Messages</button>
+                    <button class="nav-link" onclick="scrollToSection(5)">Not a Novice</button>
+                    <button class="nav-link" onclick="scrollToSection(6)">Giving</button>
+					<button class="nav-link" onclick="scrollToSection(7)">GTW</button>
+					
+					<div class="nav-socials-inline">
+						<a class="facebook" href="https://www.facebook.com/goodshepherdchurchhq?mibextid=wwXIfr&rdid=OMRYBQXdAVUX7Oj3" target="_blank" aria-label="Facebook">
+							<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.675 0H1.325C0.593 0 0 0.593 0 1.325v21.351C0 23.407 0.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.894-4.788 4.66-4.788 1.324 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.407 24 24 23.407 24 22.676V1.325C24 .593 23.407 0 22.675 0z"/></svg>
+						</a>
+						<a class="instagram" href="https://www.instagram.com/goodshepherdchurch_hq?igsh=YWp2cWk0NWo2Yzh1" target="_blank" aria-label="Instagram">
+							<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm5 4.2A4.8 4.8 0 1 1 7.2 11 4.8 4.8 0 0 1 12 6.2zm6.4-.6a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg>
+						</a>
+						<a class="x" href="https://x.com/CathedralWest" target="_blank" aria-label="X">
+							<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+						</a>
+						<a class="tiktok" href="https://www.tiktok.com/@bishopvcasabere" target="_blank" aria-label="TikTok">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tiktok" viewBox="0 0 16 16">
+								<path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
+							</svg>
+						</a>
+					</div>
+				</nav>
+			</div>
+		</div>
+
+		<video src="wee.mp4" autoplay loop muted playsinline></video>
+		<div class="landing-content">
+			<h1 class="landing-title">The Good Shepherd Church</h1>
+			<div class="landing-subtitle">Welcome Home</div>
+
+			<div class="cta-group">
+				<a class="btn primary" href="#">Join Us This Weekend</a>
+				<a class="btn outline" href="#">Watch Online</a>
+			</div>
+		</div>
+
+		<!-- Scroll down animation -->
+		<div class="scroll-down">
+			<span class="scroll-text">Scroll Down</span>
+			<svg class="arrow" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M12 4V32" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+				<path d="M6 26L12 32L18 26" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+			</svg>
+		</div>
+	</section>
+    <!-- Info Section -->
+    <section class="section info-section">
+        <div class="info-content">
+            <div class="info-title">About Us</div>
+            <div class="info-text">
+                We are a community dedicated to faith, growth, and service.<br>
+                Join us for worship, fellowship, and outreach as we strive to make a positive impact in our world.<br>
+                <br>
+                <b>Mission:</b> To Save the Lost at any Cost.
+            </div>
+        </div>
+        <div class="info-image">
+            <img src="B1PT.jpg" alt="Bishops Portrait">
+        </div>
+    </section>
+    <!-- Gallery Section -->
+    <section class="section gallery-section">
+        <div class="gallery-bg" id="gallery-bg"></div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-content">
+            <h2 class="gallery-title" style="color: #fff;">Gallery</h2>
+            <div class="slideshow-container">
+                <!-- Slideshow images -->
+                <div class="slideshow-slide active"><img src="IMG-20250911-WA0031.jpg" alt="Gallery Image 1"></div>
+                <div class="slideshow-slide"><img src="PXL2.jpg" alt="Gallery Image 2"></div>
+                <div class="slideshow-slide"><img src="PXL1.jpg" alt="Gallery Image 3"></div>
+                <div class="slideshow-slide"><img src="PXL3.jpg" alt="Gallery Image 4"></div>
+                <div class="slideshow-slide"><img src="PXL4.jpg" alt="Gallery Image 5"></div>
+                <div class="slideshow-slide"><img src="PXL5.jpg" alt="Gallery Image 6"></div>
+                <div class="slideshow-slide"><img src="PXL6.jpg" alt="Gallery Image 7"></div>
+            </div>
+            <!-- Slideshow controls -->
+            <div class="slideshow-controls">
+                <button class="active" onclick="showSlide(0)"></button>
+                <button onclick="showSlide(1)"></button>
+                <button onclick="showSlide(2)"></button>
+                <button onclick="showSlide(3)"></button>
+                <button onclick="showSlide(4)"></button>
+                <button onclick="showSlide(5)"></button>
+                <button onclick="showSlide(6)"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="section location-section" style="background: linear-gradient(135deg, #0d0d2b, #1c1c3c); color: #fff; padding: 80px 24px; overflow-x: hidden; box-sizing: border-box;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start;">
+            <!-- Map -->
+            <div style="flex: 1; min-width: 300px; max-width: 600px;">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.123456789!2d-58.123456789!3d6.123456789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x123456789abcdef!2sGood%20Shepherd%20Church!5e0!3m2!1sen!2s!4v1234567890"
+                    width="100%" 
+                    height="400" 
+                    style="border: 0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+            <!-- Info -->
+            <div style="flex: 1; min-width: 300px; max-width: 600px;">
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                    <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 16px; color: #fff;">Main Location</h2>
+                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 16px;">
+                        <strong>Address:</strong> Canal Nr, Lot 8C South Section, 2 Polder<br>
+                        <strong>Phone:</strong> <a href="tel:6836396" style="color: #6a5acd; text-decoration: none;">683 6396</a>
+                    </p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                    <h3 style="font-size: 1.8rem; font-weight: 600; margin-bottom: 12px; color: #fff;">Service Times</h3>
+                    <p style="font-size: 1.2rem; line-height: 1.8;">
+                        <strong>Sunday:</strong> 9:00 AM & 11:00 AM<br>
+                        <strong>Tuesday:</strong> 6:30 PM
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Additional Branches -->
+        <div style="margin-top: 48px; text-align: center;">
+            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 24px; color: #fff;">Other Branches</h2>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 24px;">
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 24px; width: 300px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 12px; color: #fff;">Branch 1</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong>Address:</strong> 123 Church Lane, Cityville<br>
+                        <strong>Phone:</strong> <a href="tel:1234567890" style="color: #6a5acd; text-decoration: none;">123-456-7890</a>
+                    </p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 24px; width: 300px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 12px; color: #fff;">Branch 2</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong>Address:</strong> 456 Faith Street, Townsville<br>
+                        <strong>Phone:</strong> <a href="tel:9876543210" style="color: #6a5acd; text-decoration: none;">987-654-3210</a>
+                    </p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 24px; width: 300px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 12px; color: #fff;">Branch 3</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong>Address:</strong> 789 Grace Avenue, Faithville<br>
+                        <strong>Phone:</strong> <a href="tel:4567891230" style="color: #6a5acd; text-decoration: none;">456-789-1230</a>
+                    </p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 24px; width: 300px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 12px; color: #fff;">Branch 4</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong>Address:</strong> 321 Hope Street, Blessingsville<br>
+                        <strong>Phone:</strong> <a href="tel:7891234560" style="color: #6a5acd; text-decoration: none;">789-123-4560</a>
+                    </p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 24px; width: 300px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 12px; color: #fff;">Branch 5</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong>Address:</strong> 654 Peace Road, Harmonyville<br>
+                        <strong>Phone:</strong> <a href="tel:3216549870" style="color: #6a5acd; text-decoration: none;">321-654-9870</a>
+                    </p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 24px; width: 300px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 12px; color: #fff;">Branch 6</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong>Address:</strong> 987 Unity Blvd, Fellowship City<br>
+                        <strong>Phone:</strong> <a href="tel:6549873210" style="color: #6a5acd; text-decoration: none;">654-987-3210</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Messages Section -->
+    <section class="section messages-section">
+        <div>
+            <h2>Messages</h2>
+            <p>Explore our sermons and teachings to grow in faith.</p>
+        </div>
+    </section>
+
+    <!-- Not a Novice Section -->
+    <section class="section novice-section">
+        <div>
+            <h2>Not a Novice</h2>
+            <p>Learn more about our programs for spiritual growth and leadership.</p>
+        </div>
+    </section>
+
+    <!-- Giving Section -->
+    <section class="section giving-section" style="background: linear-gradient(135deg, #0d0d2b, #1c1c3c); color: #fff; text-align: center; padding: 80px 24px;">
+        <div>
+            <h2 style="font-size: 3rem; font-weight: 700; margin-bottom: 16px; position: relative;">
+                Giving
+                <span style="display: block; width: 80px; height: 4px; background: #6a5acd; margin: 8px auto 0;"></span>
+            </h2>
+            <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 32px;">
+                You can give to the Goodshepherd Church if you've been blessed by any of our services in person or online. God bless you!
+            </p>
+            <a href="#" style="display: inline-block; padding: 12px 24px; font-size: 1rem; font-weight: 600; color: #fff; background: #333; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); transition: background 0.3s ease;">
+                CLICK HERE TO GIVE →
+            </a>
+        </div>
+    </section>
+
+    <!-- GTW Section -->
+    <section class="section gtw-section">
+        <div>
+            <h2>Give Thyself Wholly (GTW)</h2>
+            <p>Join our annual conference to deepen your faith and commitment.</p>
+        </div>
+    </section>
+
+    <script> // This script handles navigation, I used AI for most of this part.
+        // Create overlay element
+        const overlay = document.createElement('div');
+        overlay.className = 'mobile-nav-overlay';
+        document.body.appendChild(overlay);
+
+        // Handle mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const mobileNav = document.getElementById('mobile-nav');
+
+        function closeMobileMenu() {
+            hamburger.setAttribute('aria-expanded', 'false');
+            mobileNav.classList.remove('open');
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+            mobileNav.setAttribute('aria-hidden', 'true');
+        }
+
+        function toggleMobileMenu() {
+            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+            hamburger.setAttribute('aria-expanded', !isExpanded);
+            mobileNav.classList.toggle('open');
+            overlay.classList.toggle('open');
+            document.body.style.overflow = isExpanded ? '' : 'hidden';
+            mobileNav.setAttribute('aria-hidden', isExpanded);
+        }
+
+        // Handle window resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                // autoomatically close mobile menu if resizing to desktop
+                if (window.innerWidth > 900 && mobileNav.classList.contains('open')) {
+                    closeMobileMenu();
+                }
+            }, 250); // Debounce resize events
+        });
+
+        hamburger.addEventListener('click', toggleMobileMenu);
+
+        // Close mobile menu when clicking overlay
+        overlay.addEventListener('click', toggleMobileMenu);
+
+        // Close mobile menu when clicking a nav link
+        mobileNav.addEventListener('click', (e) => {
+            if (e.target.classList.contains('nav-link')) {
+                toggleMobileMenu();
+            }
+        });
+
+        // Close mobile menu on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+                toggleMobileMenu();
+            }
+        });
+
+        function scrollToSection(idx) {
+            const sections = document.querySelectorAll('.section');
+            if (sections[idx]) {
+                sections[idx].scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Slideshow functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slideshow-slide');
+        const controls = document.querySelectorAll('.slideshow-controls button');
+        const galleryBg = document.getElementById('gallery-bg');
+
+        function showSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            controls[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            controls[currentSlide].classList.add('active');
+            updateBackground();
+        }
+
+        function updateBackground() {
+            const currentImage = slides[currentSlide].querySelector('img').src;
+            galleryBg.style.backgroundImage = `url(${currentImage})`;
+        }
+
+        // Initialize background with the first image
+        updateBackground();
+
+        // automatic slide 
+        function nextSlide(){
+            let nextIndex = (currentSlide + 1 ) % slides.length;
+            showSlide(nextIndex);
+        }
+        setInterval(nextSlide, 5000); // Change slide every 5 seconds
+
+
+    </script>
+</body>
+</html>
+
